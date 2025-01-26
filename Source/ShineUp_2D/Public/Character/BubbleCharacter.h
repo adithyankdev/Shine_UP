@@ -33,5 +33,8 @@ protected:
 
 	//Function Call When The Animation Finishes
 	void OnPostPopAnimation();
+   
+	UFUNCTION(BlueprintNativeEvent, Category = "Custom")
 
+	void MyBlueprintFunction();
 };

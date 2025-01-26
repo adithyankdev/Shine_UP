@@ -36,5 +36,14 @@ void ABubbleCharacter::OnPlayerDestroy()
 void ABubbleCharacter::OnPostPopAnimation()
 {
 	CharacterFlipBookComp->SetVisibility(false);
+
+	MyBlueprintFunction();
 }
+
+void ABubbleCharacter::MyBlueprintFunction_Implementation()
+{
+
+}
+
+
 
