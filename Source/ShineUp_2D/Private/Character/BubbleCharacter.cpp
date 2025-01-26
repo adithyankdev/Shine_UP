@@ -1,10 +1,14 @@
 
 
 #include "Character/BubbleCharacter.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 
 ABubbleCharacter::ABubbleCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	CharacterFlipBookComp = CreateDefaultSubobject<UPaperFlipbookComponent>("PlayerFlipBook");
+	CharacterFlipBookComp->SetupAttachment(RootComponent);
 
 }
 
@@ -16,15 +20,21 @@ void ABubbleCharacter::BeginPlay()
 
 void ABubbleCharacter::OnPlayerDestroy()
 {
+	CharacterFlipBookComp->SetFlipbook(BubblePopFlipbook);
 	UnPossessed();
-	Destroy();
+	if (UPrimitiveComponent* Root = Cast<UPrimitiveComponent>(GetRootComponent()))
+	{
+		Root->SetSimulatePhysics(false);
+		
+	}
+
+	FTimerHandle PostAnimationTimer;
+	GetWorld()->GetTimerManager().SetTimer(PostAnimationTimer, this, &ABubbleCharacter::OnPostPopAnimation,TimerValue);
 }
 
-void ABubbleCharacter::Tick(float DeltaTime)
+//Used To Hide Mesh After The Animation
+void ABubbleCharacter::OnPostPopAnimation()
 {
-	Super::Tick(DeltaTime);
-
+	CharacterFlipBookComp->SetVisibility(false);
 }
-
-
 
